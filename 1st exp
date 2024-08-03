@@ -1,0 +1,100 @@
+Code Description:
+This code performs an initial exploratory data analysis (EDA) on a housing dataset. It starts by loading and inspecting the data, then summarizes basic statistics and provides insights into the numerical columns. 
+It narrows down to analyzing specific columns ('price' and 'bedrooms') by exploring their correlation, skewness, and standard deviation, which can be crucial for understanding relationships and characteristics in the dataset.
+
+Importing Libraries:python
+import pandas as pd
+import numpy as np
+These lines import the necessary libraries: pandas for data manipulation and analysis, and numpy for numerical operations.
+
+Reading the Dataset:
+data = pd.read_csv("Housing.csv")
+This reads the dataset from a CSV file named "Housing.csv" into a DataFrame called data.
+
+Displaying the First and Last 10 Rows:
+print("\nFirst 10 rows of the dataset:")
+print(data.head(10))
+print("\nLast 10 rows of the dataset:")
+print(data.tail(10))
+These lines display the first 10 and last 10 rows of the dataset. This helps in getting a quick overview of the data and checking if it has been loaded correctly.
+
+Summarizing Column Data:
+print("\nSum of each column:")
+print(data.sum())
+print("\nMaximum value in each column:")
+print(data.max())
+print("\nMinimum value in each column:")
+print(data.min())
+These lines compute and print the sum, maximum, and minimum values for each column. This gives a sense of the range and aggregate values in the dataset.
+
+Descriptive Statistics for Numeric Data:
+numeric_data = data.select_dtypes(include=[np.number])
+print(numeric_data.describe())
+This segment selects numeric columns and prints their descriptive statistics, including count, mean, standard deviation, min, and max values. This is useful for understanding the distribution and spread of numerical variables.
+
+Displaying Column Names and DataFrame Information:
+print("Columns in the dataset:")
+print(data.columns)
+print("\nDataFrame Info:")
+data.info()
+These lines print the names of all columns in the DataFrame and display information about the DataFrame, including the number of entries, data types, and non-null counts. This helps in understanding the structure and completeness of the dataset.
+
+Selecting Specific Columns:
+data1 = data[["price", "bedrooms"]]
+print("\nSelected columns:")
+print(data1.head())
+Here, the code creates a new DataFrame data1 containing only the "price" and "bedrooms" columns and prints the first few rows of this subset. This is useful for focusing analysis on specific variables.
+
+Correlation Between 'Price' and 'Bedrooms':
+correlation = data1.corr()
+print("\nCorrelation between 'price' and 'bedrooms':")
+print(correlation)
+This calculates and prints the correlation matrix for the selected columns. It measures the strength and direction of the linear relationship between 'price' and 'bedrooms'.
+
+Skewness of the Data:
+skewness = data1.skew()
+print("\nSkewness between 'price' and 'bedrooms':")
+print(skewness)
+This computes and prints the skewness of the 'price' and 'bedrooms' columns, indicating the asymmetry of the data distribution.
+
+Standard Deviation of 'Price':
+standard_deviation_price = data['price'].std()
+print("\nStandard Deviation of 'price':", standard_deviation_price)
+Finally, this calculates and prints the standard deviation of the 'price' column, which measures the amount of variation or dispersion of the price values.
+
+Code:
+import pandas as pd
+import numpy as np
+data = pd.read_csv("Housing.csv")
+column_numbers = [0, 1]
+print("\nFirst 10 rows of the dataset:")
+print(data.head(10))
+print("\nLast 10 rows of the dataset:")
+print(data.tail(10))
+print("\nSum of each column:")
+print(data.sum())
+print("\nMaximum value in each column:")
+print(data.max())
+print("\nMinimum value in each column:")
+print(data.min())
+numeric_data = data.select_dtypes(include=[np.number])
+print(numeric_data.describe())
+import pandas as pd
+import numpy as np
+data = pd.read_csv("Housing.csv")
+print("Columns in the dataset:")
+print(data.columns)
+print("\nDataFrame Info:")
+data.info()
+data1 = data[["price", "bedrooms"]]
+print("\nSelected columns:")
+print(data1.head())
+correlation = data1.corr()
+print("\nCorrelation between 'price' and 'bedrooms':")
+print(correlation)
+skewness = data1.skew()
+print("\nSkewness between 'price' and 'bedrooms':")
+print(skewness)
+standard_deviation_price = data['price'].std()
+print("\nStandard Deviation of 'price':", standard_deviation_price)
+
