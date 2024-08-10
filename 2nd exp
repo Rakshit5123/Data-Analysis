@@ -1,0 +1,62 @@
+import matplotlib.pyplot as plt
+import pandas as pd
+import seaborn as sns
+
+data = pd.read_csv("Housing.csv")
+
+# Bar Graph
+plt.figure(figsize=(10, 6))
+plt.bar(data['bedrooms'], data['bathrooms'], color='blue')
+plt.xlabel('Bedrooms')
+plt.ylabel('Bathrooms')
+plt.title('Basic Bar Graph')
+plt.show()
+
+# Histogram
+plt.figure(figsize=(10, 6))
+plt.hist(data['bedrooms'], bins=10, color='blue', edgecolor='black')
+plt.xlabel('Number of Bedrooms')
+plt.ylabel('Frequency')
+plt.title('Histogram of Bedrooms')
+plt.show()
+
+# Scatter Plot
+plt.figure(figsize=(10, 6))
+plt.scatter(data['bathrooms'], data['price'], color='blue', edgecolor='black')
+plt.xlabel('Bathrooms')
+plt.ylabel('Price')
+plt.title('Scatter Plot of Bathrooms vs Price')
+plt.show()
+
+# Line Plot
+plt.figure(figsize=(10, 6))
+plt.plot(data['sqft_above'], data['sqft_lot'], color='green', marker='o', linestyle='-', linewidth=1, markersize=5)
+plt.xlabel('Sqft Above')
+plt.ylabel('Sqft Lot')
+plt.title('Line Plot of Sqft Above vs Sqft Lot')
+plt.grid(True)
+plt.show()
+
+# Boxplot
+plt.figure(figsize=(10, 6))
+sns.boxplot(x='bedrooms', y='price', data=data, palette='viridis')
+plt.xlabel('Number of Bedrooms')
+plt.ylabel('Price')
+plt.title('Boxplot of Price by Number of Bedrooms')
+plt.show()
+
+# Heatmap
+pivot_table = data.pivot_table(values='price', index='condition', columns='view', aggfunc='median')
+plt.figure(figsize=(12, 8))
+sns.heatmap(pivot_table, cmap='YlGnBu', annot=True, fmt='.1f', cbar_kws={'label': 'Median Price'})
+plt.xlabel('View')
+plt.ylabel('Condition')
+plt.title('Heatmap of Median Price by Condition and View')
+plt.show()
+Summary of EDA Process
+EDA (Exploratory Data Analysis) involves understanding the structure, relationships, and key patterns in the dataset. Through visualizations, you can identify outliers, understand distributions, and explore correlations between variables.
+This Code effectively covers multiple aspects of EDA:
+Distribution Analysis: The histogram and boxplot show the distribution of specific variables.
+Relationship Analysis: Scatter plots, line plots, and bar graphs explore relationships between pairs of variables.
+Pattern Identification: The heatmap helps identify patterns and interactions between categorical variables.
+By using these visualizations, you can gain valuable insights into the dataset, which is crucial for making informed decisions during further analysis or model building.
