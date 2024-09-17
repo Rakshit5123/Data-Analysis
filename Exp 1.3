@@ -1,0 +1,63 @@
+#Explanation of Key Steps:
+#Loading Data: The dataset is loaded from a CSV file into a Pandas DataFrame.
+#Null Value Check: The code checks for any missing values in specified columns and counts them.
+#Filling Nulls: Missing values are filled with designated replacements.
+#Encoding: Categorical variables are transformed into numerical format using LabelEncoder.
+#Data Inspection: Information about the modified DataFrame is printed, including its shape and a preview of encoded columns.
+#Saving Updated Data: The modified DataFrame is saved back to a new CSV file.
+import numpy as np
+import pandas as pd
+from sklearn.preprocessing import LabelEncoder
+
+# Load the dataset from a CSV file
+data = pd.read_csv("Housing.csv")
+
+# Specify the columns to check for null values
+columns_to_check = ['id', 'bathrooms']
+
+# Check for null values in the specified columns
+null_check = data[columns_to_check].isnull()
+print(null_check)
+
+# Count the number of null values in each specified column
+null_counts = data[columns_to_check].isnull().sum()
+print(null_counts)
+
+# Fill null values in 'id' with 'Unknown' and in 'bathrooms' with 0
+data[columns_to_check] = data[columns_to_check].fillna({'id': 'Unknown', 'bathrooms': 0})
+
+# Verify that there are no more null values after filling them
+null_counts_after_fill = data[columns_to_check].isnull().sum()
+print("After Fillna")
+print(null_counts_after_fill)
+
+# Convert 'id' column to string type for encoding
+data['id'] = data['id'].astype(str)
+
+# Initialize the LabelEncoder for encoding categorical variables
+label_encoder = LabelEncoder()
+
+# Encode the 'id' column using label encoding
+data['id'] = label_encoder.fit_transform(data['id'])
+
+# Encode the 'bathrooms' column after converting it to string type
+data['bathrooms'] = label_encoder.fit_transform(data['bathrooms'].astype(str))
+
+# Display information about the DataFrame, focusing on the specified columns
+print("\nDataFrame Information:")
+data[columns_to_check].info()
+
+# Print the shape of the DataFrame for the specified columns
+print("\nShape of the DataFrame for specified columns:")
+print(data[columns_to_check].shape)
+
+# Display the first few rows of the encoded 'id' column
+print("\nEncoded 'id' column:")
+print(data['id'].head())
+
+# Display the first few rows of the encoded 'bathrooms' column
+print("\nEncoded 'bathrooms' column:")
+print(data['bathrooms'].head())
+
+# Save the updated DataFrame back to a new CSV file without including the index
+data.to_csv('Housing_updated.csv', index=False)
