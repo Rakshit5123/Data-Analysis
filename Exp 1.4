@@ -1,0 +1,55 @@
+import pandas as pd
+import numpy as np
+from sklearn.preprocessing import LabelEncoder
+from sklearn.impute import SimpleImputer
+from sklearn.decomposition import PCA
+import matplotlib.pyplot as plt
+data = pd.read_csv("housing.csv")  # Replace with your actual CSV file path
+print("Original Data (before imputation):")
+print(data.head())
+columns_to_impute = ['bathrooms', 'bedrooms', 'price']
+imputer = SimpleImputer(strategy='mean') 
+data[columns_to_impute] = imputer.fit_transform(data[columns_to_impute])
+print("\nData After Imputation:")
+print(data[columns_to_impute].head())
+
+# Normalize the bathroom data using Min-Max Normalization
+def min_max_normalization(column):
+    return (column - column.min()) / (column.max() - column.min())
+data['bathrooms_min_max'] = min_max_normalization(data['bathrooms'])
+
+# Mean Normalization
+def mean_normalization(column):
+    return (column - column.mean()) / (column.max() - column.min())
+data['bathrooms_mean'] = mean_normalization(data['bathrooms'])
+
+# Z-Score Normalization (Standardization)
+def z_score_normalization(column):
+    return (column - column.mean()) / column.std()
+data['bathrooms_z_score'] = z_score_normalization(data['bathrooms'])
+print("\nNormalized Data (Min-Max, Mean, and Z-Score):")
+print(data[['bathrooms', 'bathrooms_min_max', 'bathrooms_mean', 'bathrooms_z_score']].head())
+
+# Choose columns for PCA
+pca_columns = ['bathrooms_min_max', 'bathrooms_mean', 'bathrooms_z_score', 'bedrooms']
+
+# Standardize the Data for PCA (using mean and std from chosen columns)
+data_standardized = (data[pca_columns] - data[pca_columns].mean()) / data[pca_columns].std()
+#PCA
+pca = PCA(n_components=2) 
+pca_result = pca.fit_transform(data_standardized)
+explained_variance = pca.explained_variance_ratio_
+cumulative_variance = np.cumsum(explained_variance)
+print("\nPCA Result (First two principal components):")
+print(pd.DataFrame(data=pca_result, columns=['PC1', 'PC2']).head())
+plt.figure(figsize=(10, 6))
+plt.plot(range(1, len(explained_variance)+1), explained_variance, marker='o', label='Component-wise Explained Variance')
+plt.plot(range(1, len(cumulative_variance)+1), cumulative_variance, marker='o', linestyle='--', label='Cumulative Explained Variance')
+plt.xlabel("Principal Component")
+plt.ylabel("Variance Explained")
+plt.xticks(range(1, len(explained_variance)+1))
+plt.title('PCA Explained Variance')
+plt.legend()
+plt.grid()
+plt.tight_layout()
+plt.show()
